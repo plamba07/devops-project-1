@@ -1,29 +1,21 @@
 #!/bin/bash
 set -e
+exec > /var/log/user-data.log 2>&1
 
-# Update and install dependencies
+cd /home/ubuntu
 apt update -y
 apt install -y python3 python3-pip python3-venv git
 
-# Go to home directory
-cd /home/ubuntu
-
-# Clone the app repository
+# Clone repo
 git clone https://github.com/rahulwagh/python-mysql-db-proj-1.git
 cd python-mysql-db-proj-1
 
-# Create a Python virtual environment
+# Create virtual environment
 python3 -m venv venv
-
-# Activate the virtual environment
 source venv/bin/activate
 
-# Install Python dependencies
-pip install -r requirements.txt
+# Install dependencies
+venv/bin/pip install -r requirements.txt
 
-# Wait for a few seconds before starting the app
-echo "Waiting before starting the app..."
-sleep 10
-
-# Start the app with logging
+# Start app in background and log output
 nohup venv/bin/python3 app.py > app.log 2>&1 &
